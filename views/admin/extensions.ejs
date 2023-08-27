@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* .long-url {
+        width: 250px;
+        word-wrap: break-word;
+        display: inline-block;
+      } */
+      textarea {
+        width: 250px;
+        min-height: 50px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('../partials/header.ejs') %>
+
+    <br />
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-mdb-toggle="modal"
+            data-mdb-target="#addExtensionModal"
+          >
+            Add New Extension
+          </button>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr class="table-dark">
+                <th scope="col">Ext ID</th>
+                <th scope="col">Ext Name</th>
+                <th scope="col">Install URL</th>
+                <th scope="col">Uninstall URL</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ext_list_table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="addExtensionModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Add New Extension
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-mdb-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="add_new_ext_form">
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <input
+                  type="text"
+                  id="ext_name"
+                  class="form-control"
+                />
+                <label class="form-label" for="ext_name"
+                  >Extension Name</label
+                >
+              </div>
+
+              <div class="form-outline mb-4">
+                <input
+                  type="text"
+                  id="ext_url_path"
+                  class="form-control"
+                />
+                <label class="form-label" for="ext_url_path"
+                  >Extension URL Path</label
+                >
+              </div>
+
+              <div class="form-outline mb-4">
+                <textarea
+                  class="form-control"
+                  rows="4"
+                  id="ext_install_url"
+                ></textarea>
+                <label class="form-label" for="ext_install_url"
+                  >Install URL</label
+                >
+              </div>
+
+              <div class="form-outline mb-4">
+                <textarea
+                  class="form-control"
+                  rows="4"
+                  id="ext_uninstall_url"
+                ></textarea>
+                <label class="form-label" for="ext_uninstall_url"
+                  >Uninstall URL</label
+                >
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block">
+                Add
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-mdb-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+      integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- MDB -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+    ></script>
+
+    <script>
+      $(document).ready(() => {
+        $.get("/api/extension", (data, status) => {
+          let rows = "";
+
+          data.data.forEach((ext) => {
+            rows += `
+            <tr>
+                <th scope="row" >${ext.ext_id}</th>
+                <td>${ext.ext_name}</td>
+                <td><textarea class="form-control">${ext.ext_install_url}</textarea></td>
+                <td><textarea class="form-control">${ext.ext_uninstall_url}</textarea></td>
+                <td ><a href='/admin/codes?eid=${ext.ext_id}' class='btn btn-success me-1'>Codes</a><button class="btn btn-danger delete-btn" data-id='${ext.ext_id}'>Delete</button></td>
+              </tr>
+            `;
+          });
+
+          $("#ext_list_table").html(rows);
+        });
+
+        $(document).on("submit", "#add_new_ext_form", (e) => {
+          e.preventDefault();
+          let ext_name = $("#ext_name").val();
+          let ext_install_url = $("#ext_install_url").val();
+          let ext_uninstall_url = $("#ext_uninstall_url").val();
+          let ext_url_path = $("#ext_url_path").val();
+
+          console.log(ext_name);
+          console.log(ext_install_url)
+          console.log(ext_uninstall_url)
+          console.log(ext_url_path)
+
+          $.post(
+            "/api/extension",
+            { ext_name, ext_url_path, ext_install_url, ext_uninstall_url },
+            (data, status) => {
+              if (status == "success") {
+                if (data.success) {
+                  Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Extension Added Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  setTimeout(() => {
+                    location.reload();
+                  }, 2000)
+                }
+              }
+            }
+          );
+        });
+
+        $(document).on("click", ".delete-btn", (e) => {
+        let eid = e.target.getAttribute("data-id");
+
+        $.get(`/api/extension/delete?eid=${eid}`, (data, status) => {
+          if(status == "success") {
+            if(data.success) {
+              Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Extension Deleted Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  setTimeout(() => {
+                    location.reload();
+                  }, 2000)
+            }
+          }
+        })
+      })
+      });
+    </script>
+  </body>
+</html>
