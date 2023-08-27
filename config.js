@@ -3,8 +3,8 @@ const fs = require('fs');
 
 const connection = mysql.createConnection({
     host: "db-mysql-nyc1-couponcodes-do-user-14505695-0.b.db.ondigitalocean.com",
-    user: "doadmin",
-    password: "AVNS_DEm2tytOF9ib7NpFWJZ",
+    user: "rajesh",
+    password: "AVNS_i3Ms_GAEUoZBmC3z2-t",
     database: "defaultdb",
     port: 25060,
     ssl  : {
