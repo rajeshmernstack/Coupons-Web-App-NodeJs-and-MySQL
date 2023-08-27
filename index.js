@@ -54,4 +54,7 @@ app.get("/:url_path/uninstall", (req, res) => {
   })
 })
 
-app.listen();
+const port = process.env.PORT || 5000;
+const host = process.env.HOST || 'localhost';
+
+app.listen(port, host);
