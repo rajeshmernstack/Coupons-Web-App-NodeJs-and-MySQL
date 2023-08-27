@@ -5,7 +5,10 @@ const connection = mysql.createConnection({
     user: "doadmin",
     password: "AVNS_DEm2tytOF9ib7NpFWJZ",
     database: "defaultdb",
-    port: 25060
+    port: 25060,
+    ssl  : {
+        ca : fs.readFileSync(__dirname + '/ca-certificate.crt')
+      }
 })
 
 connection.connect(function(err){
