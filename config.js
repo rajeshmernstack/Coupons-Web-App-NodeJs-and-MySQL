@@ -1,10 +1,11 @@
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
-    host: "db-mysql-nyc1-couponcodes-do-user-14505695-0.b.db.ondigitalocean.com:25060",
+    host: "db-mysql-nyc1-couponcodes-do-user-14505695-0.b.db.ondigitalocean.com",
     user: "doadmin",
     password: "AVNS_DEm2tytOF9ib7NpFWJZ",
-    database: "defaultdb"
+    database: "defaultdb",
+    port: 25060
 })
 
 connection.connect(function(err){
