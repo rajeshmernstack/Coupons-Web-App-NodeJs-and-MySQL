@@ -27,6 +27,10 @@ app.use("/api/code", codeRouter)
 app.get("/admin", (req, res) => {
   res.render("admin/index")
 });
+
+app.get("/", (req, res) => {
+  res.render("index");
+})
 app.get("/admin/extensions", (req, res) => {
   res.render("admin/extensions")
 })
