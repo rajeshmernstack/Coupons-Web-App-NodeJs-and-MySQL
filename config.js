@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const fs = require('fs');
 
 const connection = mysql.createConnection({
     host: "db-mysql-nyc1-couponcodes-do-user-14505695-0.b.db.ondigitalocean.com",
