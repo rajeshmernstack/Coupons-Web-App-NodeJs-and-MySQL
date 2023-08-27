@@ -20,6 +20,7 @@ const userRouter = require('./routes/userRouter');
 const extRouter = require('./routes/extRouter');
 const codeRouter = require("./routes/codeRouter");
 
+
 app.use("/user", userRouter);
 app.use("/api/extension", extRouter);
 app.use("/api/code", codeRouter)
@@ -49,4 +50,4 @@ app.get("/:url_path/uninstall", (req, res) => {
   })
 })
 
-app.listen(3000);
+app.listen();
