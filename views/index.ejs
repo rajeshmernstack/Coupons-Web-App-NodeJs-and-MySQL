@@ -7,7 +7,41 @@
 </head>
 <body>
 
-    <h1>Node.Js app is working fine</h1>
+
+    <form id="login-form">
+        <input type="text" name="username" id="username" placeholder="username" />
+        <input type="password" name="password" id="password" placeholder="password" />
+        <input type="submit" value="login" />
+    </form>
+    
+
+    <p id="info"></p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function() {
+            $(document).on("submit", "#login-form", (e) => {
+                e.preventDefault();
+                let username = $('#username').val();
+                let password = $("#password").val();
+
+                fetch("/admin/login", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({username, password}),
+                }).then(res => res.json()).then(resp => {
+                    if(resp.success) {
+                        $("#info").text("Succesfully Logged In");
+                        location.href = "/admin"
+                    }else {
+                        $("#info").text("Wrong Username Or Password");
+                    }
+                });
+            })
+        })
+    </script>
     
 </body>
 </html>
