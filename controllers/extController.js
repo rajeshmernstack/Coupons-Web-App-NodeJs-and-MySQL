@@ -11,7 +11,7 @@ const addExtension = (req, res) => {
 
     connection.query(`INSERT INTO extensions SET ?`, data, (error, results, fields) => {
         if(error) 
-            res.json({success: false});
+            res.json({success: false, err: error});
         else
             res.json({success: true});
   
