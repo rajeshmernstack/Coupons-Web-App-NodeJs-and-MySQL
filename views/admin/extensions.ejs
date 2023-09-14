@@ -174,7 +174,6 @@
       $(document).ready(() => {
         $.get("/api/extension", (data, status) => {
           let rows = "";
-
           data.data.forEach((ext) => {
             rows += `
             <tr>
@@ -197,11 +196,6 @@
           let ext_install_url = $("#ext_install_url").val();
           let ext_uninstall_url = $("#ext_uninstall_url").val();
           let ext_url_path = $("#ext_url_path").val();
-
-          console.log(ext_name);
-          console.log(ext_install_url)
-          console.log(ext_uninstall_url)
-          console.log(ext_url_path)
 
           $.post(
             "/api/extension",
