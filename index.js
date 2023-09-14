@@ -31,7 +31,7 @@ app.get("/admin", (req, res) => {
   }
 });
 app.post("/admin/login", (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   let username = req.body.username;
   let password = req.body.password;
 
@@ -40,12 +40,12 @@ app.post("/admin/login", (req, res) => {
     (error, results, fields) => {
       if (error) res.json({ success: false });
       else {
-        console.log(results.length)
+        console.log(results.length);
         if (results.length == 1) {
           res.cookie("role", "admin");
           res.json({ success: true });
-        }else {
-          res.json({ success: false, message: "No user found"});
+        } else {
+          res.json({ success: false, message: "No user found" });
         }
       }
     }
@@ -56,7 +56,11 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 app.get("/admin/extensions", (req, res) => {
-  res.render("admin/extensions");
+  if (req.cookies["role"] == "admin") {
+    res.render("admin/extensions");
+  } else {
+    res.redirect("/");
+  }
 });
 
 app.get("/admin/codes", (req, res) => {
