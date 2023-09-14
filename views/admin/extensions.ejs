@@ -182,7 +182,7 @@
                 <td>${ext.ext_url_path}</td>
                 <td><textarea class="form-control">${ext.ext_install_url}</textarea></td>
                 <td><textarea class="form-control">${ext.ext_uninstall_url}</textarea></td>
-                <td ><a href='/admin/codes?eid=${ext.ext_id}' class='btn btn-success me-1'>Codes</a><button class="btn btn-danger delete-btn" data-id='${ext.ext_id}'>Delete</button></td>
+                <td><button class="btn btn-success" onClick="alert('${window.location.origin}/${ext.ext_url_path}/install')">Install URL</button><a href='/admin/codes?eid=${ext.ext_id}' class='btn btn-success me-1'>Codes</a><button class="btn btn-danger delete-btn" data-id='${ext.ext_id}'>Delete</button></td>
               </tr>
             `;
           });
