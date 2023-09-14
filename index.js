@@ -23,6 +23,30 @@ const codeRouter = require("./routes/codeRouter");
 
 app.use("/api/extension", extRouter);
 app.use("/api/code", codeRouter);
+
+app.get("/:url_path/install", (req, res) => {
+  console.log("INSTALL API")
+  let ext_url_path = req.params.url_path;
+  connection.query(
+    `SELECT ext_install_url FROM extensions WHERE ext_url_path = '${ext_url_path}'`,
+    (error, results, fields) => {
+      console.log(results);
+      res.redirect(results[0].ext_install_url);
+    }
+  );
+});
+
+app.get("/:url_path/uninstall", (req, res) => {
+  let ext_url_path = req.params.url_path;
+  connection.query(
+    `SELECT ext_uninstall_url FROM extensions WHERE ext_url_path = '${ext_url_path}'`,
+    (error, results, fields) => {
+      console.log(results);
+      res.redirect(results[0].ext_uninstall_url);
+    }
+  );
+});
+
 app.get("/admin", (req, res) => {
   if (req.cookies["role"] == "admin") {
     res.render("admin/index");
@@ -66,27 +90,7 @@ app.get("/admin/extensions", (req, res) => {
 app.get("/admin/codes", (req, res) => {
   res.render("admin/codes");
 });
-app.get("/:url_path/install", (req, res) => {
-  let ext_url_path = req.params.url_path;
-  connection.query(
-    `SELECT ext_install_url FROM extensions WHERE ext_url_path = '${ext_url_path}'`,
-    (error, results, fields) => {
-      console.log(results);
-      res.redirect(results[0].ext_install_url);
-    }
-  );
-});
 
-app.get("/:url_path/uninstall", (req, res) => {
-  let ext_url_path = req.params.url_path;
-  connection.query(
-    `SELECT ext_uninstall_url FROM extensions WHERE ext_url_path = '${ext_url_path}'`,
-    (error, results, fields) => {
-      console.log(results);
-      res.redirect(results[0].ext_uninstall_url);
-    }
-  );
-});
 
 const port = process.env.PORT || 8080;
 // const host = process.env.HOST || 'localhost';
